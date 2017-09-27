@@ -1,2 +1,5 @@
 *.class
 *.log
+message-service/.idea/*
+message-service/target/*
+message-service/project/target/*
