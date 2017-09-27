@@ -4,6 +4,7 @@ option java_multiple_files = true;
 import "google/api/annotations.proto";
 //make sure this can be used in grpc gateway
 option go_package = "datanerd";
+package datanerd;
 
 service MessageService {
 	rpc PostMessage(SecureMsg) returns (PostResult){
