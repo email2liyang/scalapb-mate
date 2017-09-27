@@ -8,5 +8,6 @@ lazy val root = (project in file("."))
   .settings(
     commonSettings,
     name := "message-service",
+    libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
   )
