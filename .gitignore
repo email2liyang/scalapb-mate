@@ -3,3 +3,4 @@
 message-service/.idea/*
 message-service/target/*
 message-service/project/target/*
+protobuffers/java_generated/*
