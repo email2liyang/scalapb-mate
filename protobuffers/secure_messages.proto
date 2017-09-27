@@ -5,10 +5,30 @@ import "google/api/annotations.proto";
 //make sure this can be used in grpc gateway
 option go_package = "datanerd";
 
+service MessageService {
+	rpc PostMessage(SecureMsg) returns (PostResult){
+	}
+	
+	rpc GetMessage(MessageId) returns (SecureMsgResult){
+	}
+}
 
 message SecureMsg {
 	string encrypted_data = 1;
 	int32 duration_hours = 2;
 	string user_pass = 3;
 	string notify_email = 4;
+}
+
+message PostResult {
+	string message_url=1;
+	//TODO add result status in enum (FAILED or SUCCESS)
+}
+
+message MessageId {
+	string message_id = 1;
+}
+
+message SecureMsgResult {
+	string encrypted_data = 1;
 }
