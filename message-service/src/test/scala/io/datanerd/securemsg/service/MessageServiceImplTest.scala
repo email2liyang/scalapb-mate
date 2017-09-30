@@ -4,14 +4,14 @@ import com.github.javafaker.Faker
 import com.google.inject.Guice
 import io.datanerd.generated.securemsg.{MessageId, MessageServiceGrpc, SecureMsg}
 import io.datanerd.generated.securemsg.MessageServiceGrpc.{MessageService, MessageServiceBlockingStub}
-import io.datanerd.securemsg.UnitSpec
+import io.datanerd.securemsg.ServiceSpec
 import io.datanerd.securemsg.guice.SecureMessageModule
 import io.grpc.inprocess.{InProcessChannelBuilder, InProcessServerBuilder}
 import org.assertj.core.api.Assertions
 
 import scala.concurrent.ExecutionContext
 
-class MessageServiceImplTest extends UnitSpec {
+class MessageServiceImplTest extends ServiceSpec {
   val faker = new Faker()
   def withParams(testCode: MessageServiceBlockingStub => Any) = {
     import net.codingwell.scalaguice.InjectorExtensions._
