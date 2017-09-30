@@ -8,8 +8,6 @@ import org.scalatest.BeforeAndAfterEach
 
 class SecureMessageModuleTest extends UnitSpec with BeforeAndAfterEach {
 
-  def getInjector(): Injector = Guice.createInjector(new SecureMessageModule)
-
   override def beforeEach() {
     logger.info("before each")
     System.setProperty("config.resource", "application-test.conf")
@@ -20,9 +18,14 @@ class SecureMessageModuleTest extends UnitSpec with BeforeAndAfterEach {
     System.clearProperty("config.resource")
   }
 
-  "A config file" should "override by unit test " in {
+  def withInjector(testCode: Injector => Any): Unit = {
+    val injector = Guice.createInjector(new SecureMessageModule)
+    testCode(injector)
+  }
+
+  "A config file" should "override by unit test " in withInjector { injector =>
     import net.codingwell.scalaguice.InjectorExtensions._
-    val config: Config = getInjector().instance[Config]
+    val config: Config = injector.instance[Config]
     assertThat(config.getString("message-service.testKey")).isNotNull
     assertThat(config.getString("message-service.testKey")) isEqualTo "key"
   }
