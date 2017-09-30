@@ -19,6 +19,7 @@ lazy val root = (project in file("."))
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
       "org.assertj" % "assertj-core" % "3.8.0" % "test",
+      "org.mockito" % "mockito-core" % "2.10.0" % "test",
       "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.6.6" % "protobuf"
     )
   )
