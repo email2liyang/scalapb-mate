@@ -10,7 +10,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import scala.concurrent.Future
 
 @Singleton
-class MessageServiceImpl @Inject() (config:Config) extends MessageServiceGrpc.MessageService {
+class MessageServiceImpl @Inject()(config: Config) extends MessageServiceGrpc.MessageService {
 
   private val log: Logger = LoggerFactory.getLogger(this.getClass)
   // see more from https://www.beyondthelines.net/computing/scala-future-and-execution-context/
