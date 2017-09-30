@@ -1,6 +1,6 @@
 package io.datanerd.securemsg.guice
 
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule,Singleton}
 import com.typesafe.config.{Config, ConfigFactory}
 import io.datanerd.generated.securemsg.MessageServiceGrpc
 import io.datanerd.securemsg.service.MessageServiceImpl
