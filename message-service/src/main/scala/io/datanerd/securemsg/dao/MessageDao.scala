@@ -1,7 +1,7 @@
 package io.datanerd.securemsg.dao
 
 import com.google.inject.Inject
-import com.google.inject.name.Named
+import io.datanerd.securemsg.guice.MongoDbName
 import reactivemongo.api.MongoConnection
 import reactivemongo.api.collections.bson.BSONCollection
 
@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 
-class MessageDao @Inject()(connection: MongoConnection, @Named("dbName") dbName: String) {
+class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: String) {
 
   import org.slf4j.{Logger, LoggerFactory}
 

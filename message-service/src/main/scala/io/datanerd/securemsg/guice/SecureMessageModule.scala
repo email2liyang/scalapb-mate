@@ -1,6 +1,5 @@
 package io.datanerd.securemsg.guice
 
-import com.google.inject.name.Names
 import com.google.inject.{AbstractModule, Singleton}
 import com.typesafe.config.{Config, ConfigFactory}
 import io.datanerd.generated.securemsg.MessageServiceGrpc
@@ -14,7 +13,7 @@ class SecureMessageModule extends AbstractModule with ScalaModule {
     val config = ConfigFactory.load()
     bind[Config].toInstance(config)
     bind[MessageServiceGrpc.MessageService].to[MessageServiceImpl].in[Singleton]
-    bind[String].annotatedWith(Names.named("dbName")).toInstance(config.getString("message-service.mongo.dbName"))
+    bind[String].annotatedWith(classOf[MongoDbName]).toInstance(config.getString("message-service.mongo.dbName"))
     bind[MongoConnection].toProvider[MongoConnectionProvider].in[Singleton]
   }
 }
