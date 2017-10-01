@@ -8,10 +8,9 @@ import reactivemongo.api.collections.bson.BSONCollection
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
+import org.slf4j.{Logger, LoggerFactory}
 
 class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: String) {
-
-  import org.slf4j.{Logger, LoggerFactory}
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
