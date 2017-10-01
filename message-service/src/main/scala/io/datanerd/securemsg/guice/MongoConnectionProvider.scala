@@ -9,7 +9,7 @@ class MongoConnectionProvider @Inject()(config: Config) extends Provider[MongoCo
 
   override def get(): MongoConnection = {
     val host = config.getString("message-service.mongo.host")
-    val port = config.getInt("message-service.mongo.port")
+    val port = config.getString("message-service.mongo.port")
 
     val conOpts = MongoConnectionOptions(
       writeConcern = WriteConcern.Acknowledged,
