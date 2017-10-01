@@ -14,6 +14,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "com.typesafe" % "config" % "1.3.1",
       "net.codingwell" %% "scala-guice" % "4.1.0",
+      "org.reactivemongo" %% "reactivemongo" % "0.12.6",
       "io.grpc" % "grpc-netty" % "1.6.1",
       "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % "0.6.6",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
