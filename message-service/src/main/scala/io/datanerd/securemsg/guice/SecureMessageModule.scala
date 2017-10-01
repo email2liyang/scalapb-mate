@@ -1,7 +1,5 @@
 package io.datanerd.securemsg.guice
 
-import javax.inject.Named
-
 import com.google.inject.name.Names
 import com.google.inject.{AbstractModule, Singleton}
 import com.typesafe.config.{Config, ConfigFactory}
