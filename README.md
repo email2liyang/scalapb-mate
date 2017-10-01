@@ -1,5 +1,4 @@
-# scalapb-mate
-# Tips
+# scalapb-mate dev tips
 
 ## how to see sbt project dependencies
 * see https://github.com/jrudolph/sbt-dependency-graph
