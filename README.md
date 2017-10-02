@@ -25,4 +25,7 @@ testOptions in Test ++= Seq(
 ## how to implement loan-fixture methods in ScalaTest
 * see [MessageServiceImplTest](https://github.com/email2liyang/scalapb-mate/blob/master/message-service/src/test/scala/io/datanerd/securemsg/service/MessageServiceImplTest.scala) for details
 
+## how to override config value in unit test
+* use [PowerConfig]()
+
 
