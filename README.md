@@ -26,6 +26,6 @@ testOptions in Test ++= Seq(
 * see [MessageServiceImplTest](https://github.com/email2liyang/scalapb-mate/blob/master/message-service/src/test/scala/io/datanerd/securemsg/service/MessageServiceImplTest.scala) for details
 
 ## how to override config value in unit test
-* use [PowerConfig]()
+* use [PowerConfig](https://github.com/email2liyang/scalapb-mate/blob/master/message-service/src/main/scala/io/datanerd/securemsg/guice/PowerConfig.scala)
 
 
