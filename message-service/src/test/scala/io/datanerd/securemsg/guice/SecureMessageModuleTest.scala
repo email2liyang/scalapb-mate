@@ -14,9 +14,9 @@ class SecureMessageModuleTest extends ServiceSpec  {
 
   "A config file" should "override by unit test " in withInjector { injector =>
     import net.codingwell.scalaguice.InjectorExtensions._
-    val config: Config = injector.instance[Config]
-    assertThat(config.getString("message-service.testKey")).isNotNull
-    assertThat(config.getString("message-service.testKey")) isEqualTo "key"
+    val config: PowerConfig = injector.instance[PowerConfig]
+    assertThat(config.getString("message-service.mongo.dbName")).isNotNull
+    assertThat(config.getString("message-service.mongo.dbName")) isEqualTo "message"
   }
 
 }

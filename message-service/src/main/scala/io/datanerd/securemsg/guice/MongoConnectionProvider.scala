@@ -1,7 +1,6 @@
 package io.datanerd.securemsg.guice
 
 import com.google.inject.{Inject, Provider}
-import com.typesafe.config.Config
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteConcern
 import reactivemongo.api.indexes.{Index, IndexType}
@@ -11,7 +10,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
-class MongoConnectionProvider @Inject()(config: Config, @MongoDbName dbName: String) extends Provider[MongoConnection] {
+class MongoConnectionProvider @Inject()(config: PowerConfig, @MongoDbName dbName: String) extends Provider[MongoConnection] {
 
   override def get(): MongoConnection = {
     val host = config.getString("message-service.mongo.host")

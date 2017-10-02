@@ -2,6 +2,7 @@ package io.datanerd.securemsg
 
 import com.dimafeng.testcontainers.{ForAllTestContainer, GenericContainer}
 import com.github.javafaker.Faker
+import io.datanerd.securemsg.guice.PowerConfig
 import org.scalatest.FlatSpec
 import org.slf4j.{Logger, LoggerFactory}
 import org.testcontainers.containers.wait.Wait
@@ -19,16 +20,10 @@ class DaoSpec extends FlatSpec with ForAllTestContainer {
   //docker run --rm -p 27017:27017 --name mongo mongo
   override def afterStart(): Unit = {
     //setup docker mongo attribute
-    System.setProperty("config.resource", "application-test.conf")
-    System.setProperty("message-service.mongo.host", container.containerIpAddress)
-    System.setProperty("message-service.mongo.port", container.mappedPort(27017).toString)
-    System.setProperty("message-service.mongo.dbName", "local")
-  }
-
-  override def beforeStop(): Unit = {
-    System.clearProperty("config.resource")
-    System.clearProperty("message-service.mongo.host")
-    System.clearProperty("message-service.mongo.port")
-    System.clearProperty("message-service.mongo.dbName")
+    PowerConfig.enableMemConfig()
+    PowerConfig.overrideMemory("config.resource", "application-test.conf")
+    PowerConfig.overrideMemory("message-service.mongo.host", container.containerIpAddress)
+    PowerConfig.overrideMemory("message-service.mongo.port", container.mappedPort(27017).toString)
+    PowerConfig.overrideMemory("message-service.mongo.dbName", faker.numerify("test-db-####"))
   }
 }

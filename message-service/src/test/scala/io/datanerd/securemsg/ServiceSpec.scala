@@ -1,5 +1,6 @@
 package io.datanerd.securemsg
 
+import io.datanerd.securemsg.guice.PowerConfig
 import org.scalatest._
 import org.slf4j.LoggerFactory
 
@@ -9,11 +10,10 @@ class ServiceSpec extends FlatSpec with BeforeAndAfterEach {
 
   override def beforeEach() {
     logger.info("before each")
-    System.setProperty("config.resource", "application-test.conf")
+    PowerConfig.enableMemConfig()
   }
 
-  override def afterEach() {
+  override def afterEach(): Unit = {
     logger.info("after each")
-    System.clearProperty("config.resource")
   }
 }
