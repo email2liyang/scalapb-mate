@@ -2,10 +2,16 @@ package io.datanerd.securemsg.guice
 
 import com.google.inject.{Inject, Provider}
 import com.typesafe.config.Config
+import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteConcern
+import reactivemongo.api.indexes.{Index, IndexType}
 import reactivemongo.api.{MongoConnection, MongoConnectionOptions, MongoDriver, ReadPreference}
 
-class MongoConnectionProvider @Inject()(config: Config) extends Provider[MongoConnection] {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
+
+class MongoConnectionProvider @Inject()(config: Config, @MongoDbName dbName: String) extends Provider[MongoConnection] {
 
   override def get(): MongoConnection = {
     val host = config.getString("message-service.mongo.host")
@@ -16,6 +22,26 @@ class MongoConnectionProvider @Inject()(config: Config) extends Provider[MongoCo
       readPreference = ReadPreference.primaryPreferred
     )
     val mongoDriver = new MongoDriver
-    mongoDriver.connection(List(s"$host:$port"),options = conOpts)
+    val connection = mongoDriver.connection(List(s"$host:$port"), options = conOpts)
+    createMessageDbIndex(connection)
+
+    connection
+  }
+
+  def createMessageDbIndex(connection: MongoConnection) = {
+    val messageColl: Future[BSONCollection] = connection.database(dbName)
+      .map(_.collection("message"))
+
+    val indexOps: Future[List[Boolean]] = messageColl
+      .map(_.indexesManager)
+      .map(indexManager => {
+        List(
+          indexManager.ensure(Index(List(("_id", IndexType.Ascending)))),
+          indexManager.ensure(Index(List(("message_url", IndexType.Ascending)))),
+        )
+      })
+      .flatMap(Future.sequence(_))
+
+    Await.result(indexOps, 10.seconds)
   }
 }
