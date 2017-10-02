@@ -15,13 +15,6 @@ class PowerConfig {
       case None => fileConfig.getString(key)
     }
   }
-
-  def overrideMemory(key: String, value: String) = {
-    PowerConfig.enableMemConfigFlag match {
-      case Some(_) => PowerConfig.memConfig.put(key, value)
-      case None => throw new IllegalStateException("unit-test, pls call PowerConfig.enableMemConfig")
-    }
-  }
 }
 
 object PowerConfig {
