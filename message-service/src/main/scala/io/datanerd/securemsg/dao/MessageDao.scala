@@ -1,6 +1,6 @@
 package io.datanerd.securemsg.dao
 
-import com.google.inject.Inject
+import com.google.inject.{Inject, Singleton}
 import io.datanerd.securemsg.guice.MongoDbName
 import org.slf4j.{Logger, LoggerFactory}
 import reactivemongo.api.MongoConnection
@@ -10,6 +10,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
+@Singleton
 class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: String) {
 
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
