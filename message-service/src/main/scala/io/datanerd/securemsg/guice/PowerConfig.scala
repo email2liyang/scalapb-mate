@@ -22,9 +22,9 @@ object PowerConfig {
   val memConfig: mutable.Map[String, String] = new java.util.concurrent.ConcurrentHashMap[String, String].asScala
   var memConfigAllowed: Option[Boolean] = None
 
-  def enableMemConfig = memConfigAllowed = Some(true)
+  def enableMemConfig() = memConfigAllowed = Some(true)
 
-  def disableMemConfig = memConfigAllowed = None
+  def disableMemConfig() = memConfigAllowed = None
 
   def overrideMemory(key: String, value: String) = {
     PowerConfig.memConfigAllowed match {
