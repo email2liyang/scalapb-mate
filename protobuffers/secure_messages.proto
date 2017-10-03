@@ -15,10 +15,11 @@ service MessageService {
 }
 
 message SecureMsg {
-	string encrypted_data = 1;
-	int32 duration_hours = 2;
-	string user_pass = 3;
-	string notify_email = 4;
+	string message_id = 1;
+	string encrypted_data = 2;
+	int32 duration_hours = 3;
+	string user_pass = 4;
+	string notify_email = 5;
 }
 
 message PostResult {
