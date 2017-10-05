@@ -4,6 +4,7 @@ import com.google.inject.{Inject, Singleton}
 import io.datanerd.generated.securemsg.{PostResult, SecureMsg}
 import io.datanerd.securemsg.bson.SecureMsgWriter
 import io.datanerd.securemsg.guice.MongoDbName
+import io.datanerd.securemsg.service.Encryption
 import org.slf4j.{Logger, LoggerFactory}
 import reactivemongo.api.MongoConnection
 import reactivemongo.api.collections.bson.BSONCollection
@@ -12,6 +13,7 @@ import reactivemongo.bson.BSONObjectID
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
+import scala.util.Random
 
 @Singleton
 class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: String) {
@@ -44,6 +46,9 @@ class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: Str
   }
 
   def generateMessageUrl(messageId: String): String = {
-    messageId
+    val key = Random.alphanumeric.take(10).mkString
+    val encryptedId = Encryption.encrypt(key,messageId)
+
+    return s"${encryptedId}#${key}"
   }
 }

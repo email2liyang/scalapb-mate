@@ -36,7 +36,10 @@ class MessageDaoTest extends DaoSpec {
 
     val postResultFuture = messageDao.saveSecureMsg(secureMsg)
     postResultFuture.onComplete {
-      case Success(postResult) => Assertions.assertThat(postResult).isNotNull
+      case Success(postResult) => {
+        Assertions.assertThat(postResult).isNotNull
+        logger.info("========={}",postResult)
+      }
       case Failure(e) => Assertions.fail("failed to save secure msg", e)
     }
 
