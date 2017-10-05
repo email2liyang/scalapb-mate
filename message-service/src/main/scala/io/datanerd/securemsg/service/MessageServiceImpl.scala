@@ -4,13 +4,14 @@ import java.util.concurrent.Executors
 
 import com.google.inject.{Inject, Singleton}
 import io.datanerd.generated.securemsg._
+import io.datanerd.securemsg.dao.MessageDao
 import io.datanerd.securemsg.guice.PowerConfig
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.concurrent.Future
 
 @Singleton
-class MessageServiceImpl @Inject()(config: PowerConfig) extends MessageServiceGrpc.MessageService {
+class MessageServiceImpl @Inject()(config: PowerConfig, messageDao: MessageDao) extends MessageServiceGrpc.MessageService {
 
   private val log: Logger = LoggerFactory.getLogger(this.getClass)
   // see more from https://www.beyondthelines.net/computing/scala-future-and-execution-context/
@@ -18,7 +19,7 @@ class MessageServiceImpl @Inject()(config: PowerConfig) extends MessageServiceGr
 
   override def postMessage(request: SecureMsg): Future[PostResult] = {
     log.info("calling post message")
-    Future.successful(PostResult().withMessageUrl("x"))
+    messageDao.saveSecureMsg(request)
   }
 
   override def getMessage(request: MessageId): Future[SecureMsgResult] = {
