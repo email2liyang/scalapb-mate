@@ -12,7 +12,7 @@ object Encryption {
   def encrypt(key: String, value: String): String = {
     val cipher: Cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
     cipher.init(Cipher.ENCRYPT_MODE, keyToSpec(key))
-    Base64.encodeBase64String(cipher.doFinal(value.getBytes("UTF-8")))
+    Base64.encodeBase64URLSafeString(cipher.doFinal(value.getBytes("UTF-8")))
   }
 
   def decrypt(key: String, encryptedValue: String): String = {
@@ -23,12 +23,12 @@ object Encryption {
 
   def keyToSpec(key: String): SecretKeySpec = {
     var keyBytes: Array[Byte] = (SALT + key).getBytes("UTF-8")
-    val sha: MessageDigest = MessageDigest.getInstance("SHA-1")
+    val sha: MessageDigest = MessageDigest.getInstance("SHA-256")
     keyBytes = sha.digest(keyBytes)
     keyBytes = util.Arrays.copyOf(keyBytes, 16)
     new SecretKeySpec(keyBytes, "AES")
   }
 
   private val SALT: String =
-    "jMhKlOuJnM34G6NHkqo9V010GhLAqOpF0BePojHgh1HgNg8^72k"
+    "tTXqDIhojuhsuiG+xbHdZAoeNwpup1ll-mP4FeQnFuRRu"
 }
