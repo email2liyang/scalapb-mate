@@ -1,14 +1,14 @@
 package io.datanerd.securemsg.dao
 
 import com.google.inject.{Inject, Singleton}
-import io.datanerd.generated.securemsg.{PostResult, SecureMsg}
-import io.datanerd.securemsg.bson.SecureMsgWriter
+import io.datanerd.generated.securemsg.{PostResult, SecureMsg, SecureMsgResult}
+import io.datanerd.securemsg.bson.{SecureMsgReader, SecureMsgWriter}
 import io.datanerd.securemsg.guice.MongoDbName
 import io.datanerd.securemsg.service.Encryption
 import org.slf4j.{Logger, LoggerFactory}
 import reactivemongo.api.MongoConnection
 import reactivemongo.api.collections.bson.BSONCollection
-import reactivemongo.bson.BSONObjectID
+import reactivemongo.bson.{BSONDocument, BSONObjectID}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -21,6 +21,7 @@ class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: Str
   val logger: Logger = LoggerFactory.getLogger(this.getClass)
 
   private implicit val secureMsgWriter = SecureMsgWriter
+  private implicit val secureMsgReader = SecureMsgReader
 
   def getCollection(): Future[BSONCollection] = {
     connection.database(dbName).map(_.collection("message"))
@@ -45,9 +46,24 @@ class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: Str
       .map(_ => PostResult(generateMessageUrl(messageId)))
   }
 
+  def getMessage(messageUrl: String): Future[SecureMsgResult] = {
+    val pair = messageUrl.split("#")
+    val encryptedId = pair(0)
+    val key = pair(1)
+    val messageId = Encryption.decrypt(key, encryptedId)
+    val query = BSONDocument("_id" -> messageId)
+
+    getCollection()
+      .flatMap(_.find(query).one[SecureMsg])
+      .map {
+        case Some(secureMsg) => SecureMsgResult(secureMsg.encryptedData)
+        case None => SecureMsgResult()
+      }
+  }
+
   def generateMessageUrl(messageId: String): String = {
     val key = Random.alphanumeric.take(10).mkString
-    val encryptedId = Encryption.encrypt(key,messageId)
+    val encryptedId = Encryption.encrypt(key, messageId)
 
     return s"${encryptedId}#${key}"
   }
