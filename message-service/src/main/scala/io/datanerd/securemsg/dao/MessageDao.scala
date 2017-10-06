@@ -1,7 +1,7 @@
 package io.datanerd.securemsg.dao
 
 import com.google.inject.{Inject, Singleton}
-import io.datanerd.generated.securemsg.{PostResult, SecureMsg, SecureMsgResult}
+import io.datanerd.generated.securemsg.{PostResult, SecureMsg}
 import io.datanerd.securemsg.bson.{SecureMsgReader, SecureMsgWriter}
 import io.datanerd.securemsg.guice.MongoDbName
 import io.datanerd.securemsg.service.Encryption
@@ -46,19 +46,14 @@ class MessageDao @Inject()(connection: MongoConnection, @MongoDbName dbName: Str
       .map(_ => PostResult(generateMessageUrl(messageId)))
   }
 
-  def getMessage(messageUrl: String): Future[SecureMsgResult] = {
+  def getMessage(messageUrl: String): Future[Option[SecureMsg]] = {
     val pair = messageUrl.split("#")
     val encryptedId = pair(0)
     val key = pair(1)
     val messageId = Encryption.decrypt(key, encryptedId)
     val query = BSONDocument("_id" -> messageId)
 
-    getCollection()
-      .flatMap(_.find(query).one[SecureMsg])
-      .map {
-        case Some(secureMsg) => SecureMsgResult(secureMsg.encryptedData)
-        case None => SecureMsgResult()
-      }
+    getCollection().flatMap(_.find(query).one[SecureMsg])
   }
 
   def generateMessageUrl(messageId: String): String = {
