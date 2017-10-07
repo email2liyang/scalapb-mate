@@ -6,6 +6,7 @@ import com.google.inject.{Inject, Singleton}
 import io.datanerd.generated.securemsg._
 import io.datanerd.securemsg.dao.MessageDao
 import io.datanerd.securemsg.guice.PowerConfig
+import io.grpc.Status
 import org.slf4j.{Logger, LoggerFactory}
 
 import scala.concurrent.Future
@@ -23,6 +24,10 @@ class MessageServiceImpl @Inject()(config: PowerConfig, messageDao: MessageDao) 
   }
 
   override def getMessage(request: MessageId): Future[SecureMsgResult] = {
-    Future.successful(SecureMsgResult().withEncryptedData("data"))
+    messageDao.getMessage(request.messageId)
+      .flatMap {
+        case Some(secureMsg) => Future.successful(SecureMsgResult(secureMsg.encryptedData))
+        case None => Future.failed(Status.NOT_FOUND.asRuntimeException())
+      }
   }
 }
