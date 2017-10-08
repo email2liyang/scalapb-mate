@@ -2,29 +2,29 @@ package io.datanerd.securemsg.guice
 
 import com.google.inject.{Inject, Provider}
 import reactivemongo.api.collections.bson.BSONCollection
-import reactivemongo.api.commands.WriteConcern
 import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.api.{MongoConnection, MongoConnectionOptions, MongoDriver, ReadPreference}
+import reactivemongo.api.{MongoConnection, MongoDriver}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
+import scala.util.{Failure, Success}
 
 class MongoConnectionProvider @Inject()(config: PowerConfig, @MongoDbName dbName: String) extends Provider[MongoConnection] {
-
+  
   override def get(): MongoConnection = {
-    val host = config.getString("message-service.mongo.host")
-    val port = config.getString("message-service.mongo.port")
-
-    val conOpts = MongoConnectionOptions(
-      writeConcern = WriteConcern.Acknowledged,
-      readPreference = ReadPreference.primaryPreferred
-    )
     val mongoDriver = new MongoDriver
-    val connection = mongoDriver.connection(List(s"$host:$port"), options = conOpts)
-    createMessageDbIndex(connection)
+    val mongoUri = config.getString("message-service.mongo.uri")
 
-    connection
+    MongoConnection.parseURI(mongoUri).map { parsedUri =>
+      mongoDriver.connection(parsedUri)
+    } match {
+      case Success(connection) =>
+        createMessageDbIndex(connection)
+        connection
+      case Failure(exception) =>
+        throw new IllegalStateException("error on mongo connection", exception)
+    }
   }
 
   def createMessageDbIndex(connection: MongoConnection) = {
