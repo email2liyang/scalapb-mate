@@ -1,0 +1,82 @@
+swagger: '2.0'
+info:
+  version: not set
+  title: 'SecureMessagesProto'
+  description: 'REST API generated from secure_messages.proto'
+schemes:
+  - http
+  - https
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+paths:
+  /grpc/api/v1/postmessage:
+    post:
+      tags:
+        - MessageService
+      summary:
+        'PostMessage'
+      description:
+        'Generated from datanerd.MessageService.PostMessage'
+      produces:
+        ['application/json']
+      responses:
+        200:
+          description: 'Normal response'
+          schema:
+            $ref: "#/definitions/PostResult"
+      parameters:
+        - in: 'body'
+          name: body
+          schema:
+            $ref: "#/definitions/SecureMsg"
+  /grpc/api/v1/getmessage:
+    get:
+      tags:
+        - MessageService
+      summary:
+        'GetMessage'
+      description:
+        'Generated from datanerd.MessageService.GetMessage'
+      produces:
+        ['application/json']
+      responses:
+        200:
+          description: 'Normal response'
+          schema:
+            $ref: "#/definitions/SecureMsgResult"
+      parameters:
+      - name: messageId
+        in: query
+        type: string
+definitions:
+  SecureMsg:
+    type: object
+    properties: 
+      messageId:
+        type: string
+      encryptedData:
+        type: string
+      durationHours:
+        type: integer
+        format: int32
+      userPass:
+        type: string
+      notifyEmail:
+        type: string
+  PostResult:
+    type: object
+    properties: 
+      messageUrl:
+        type: string
+  MessageId:
+    type: object
+    properties: 
+      messageId:
+        type: string
+  SecureMsgResult:
+    type: object
+    properties: 
+      encryptedData:
+        type: string
