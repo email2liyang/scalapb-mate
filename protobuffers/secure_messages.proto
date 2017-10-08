@@ -8,9 +8,16 @@ package datanerd;
 
 service MessageService {
 	rpc PostMessage(SecureMsg) returns (PostResult){
+		option (google.api.http) = {
+		   post: "/grpc/api/v1/postmessage"
+		   body: "*"
+		};
 	}
 	
 	rpc GetMessage(MessageId) returns (SecureMsgResult){
+		option (google.api.http) = {
+		   get: "/grpc/api/v1/getmessage"
+		};
 	}
 }
 
@@ -24,7 +31,6 @@ message SecureMsg {
 
 message PostResult {
 	string message_url=1;
-	//TODO add result status in enum (FAILED or SUCCESS)
 }
 
 message MessageId {
