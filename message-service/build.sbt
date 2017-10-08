@@ -22,7 +22,7 @@ lazy val root = (project in file("."))
       "net.codingwell" %% "scala-guice" % "4.1.0",
       "org.reactivemongo" %% "reactivemongo" % "0.12.6",
       "io.grpc" % "grpc-netty" % "1.6.1",
-      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % "0.6.6",
+      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % "0.6.3",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
       "org.pegdown" % "pegdown" % "1.6.0" % "test",
@@ -30,7 +30,7 @@ lazy val root = (project in file("."))
       "org.mockito" % "mockito-core" % "2.10.0" % "test",
       "com.github.javafaker" % "javafaker" % "0.13" % "test",
       "com.dimafeng" %% "testcontainers-scala" % "0.7.0" % "test",
-      "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.6.2" % "protobuf",
+      "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.6.3" % "protobuf",
       "beyondthelines" %% "grpcgatewayruntime" % "0.0.4" % "compile,protobuf"
     ),
     testOptions in Test ++= Seq(
