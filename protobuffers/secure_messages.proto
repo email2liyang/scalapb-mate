@@ -1,9 +1,13 @@
 syntax = "proto3";
-option java_package = "io.datanerd.generated.securemsg";
-option java_multiple_files = true;
+
+import "scalapb/scalapb.proto";
 import "google/api/annotations.proto";
-//make sure this can be used in grpc gateway
-option go_package = "datanerd";
+
+option (scalapb.options) = {
+  package_name: "io.datanerd.generated.securemsg"
+  flat_package: true
+};
+
 package datanerd;
 
 service MessageService {
